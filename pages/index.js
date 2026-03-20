@@ -41,9 +41,9 @@ export default function HomePage() {
   const [showAll,      setShowAll]    = useState(false);
 
   // Part 2
-//   const [rateData,    setRateData]  = useState(null);
-//   const [rateLoading, setRateLoad]  = useState(true);
-//   const [rateError,   setRateErr]   = useState(null);
+  const [rateData,    setRateData]  = useState(null);
+  const [rateLoading, setRateLoad]  = useState(true);
+  const [rateError,   setRateErr]   = useState(null);
 
   // Part 3
 //   const [eddData,    setEddData]  = useState(null);
@@ -69,9 +69,9 @@ export default function HomePage() {
     setPostsLoad(false);
 
     // Part 2
-    // if (rateResult.error) setRateErr(rateResult.error);
-    // else setRateData(rateResult.data);
-    // setRateLoad(false);
+    if (rateResult.error) setRateErr(rateResult.error);
+    else setRateData(rateResult.data);
+    setRateLoad(false);
 
     // Part 3
     // if (eddResult.error) setEddErr(eddResult.error);
