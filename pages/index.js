@@ -20,15 +20,15 @@ import { useState, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 
 import { fetchAllPosts, fetchSiteSettings } from '../lib/api/posts';
-// import { fetchExchangeRate }               from '../lib/api/exchange';
-// import { fetchEddSettings }                from '../lib/api/edd';
+import { fetchExchangeRate }               from '../lib/api/exchange';
+import { fetchEddSettings }                from '../lib/api/edd';
 
 import SiteHeader    from '../components/SiteHeader';
 import PostList      from '../components/PostList';
 import ToggleButton  from '../components/ToggleButton';
-// import ExchangeRate  from '../components/ExchangeRate';
-// import EddSettings   from '../components/EddSettings';
-// import NameForm      from '../components/NameForm';
+import ExchangeRate  from '../components/ExchangeRate';
+import EddSettings   from '../components/EddSettings';
+import NameForm      from '../components/NameForm';
 
 const RECENT_COUNT = 3;
 
@@ -46,20 +46,20 @@ export default function HomePage() {
   const [rateError,   setRateErr]   = useState(null);
 
   // Part 3
-//   const [eddData,    setEddData]  = useState(null);
-//   const [eddLoading, setEddLoad]  = useState(true);
-//   const [eddError,   setEddErr]   = useState(null);
+  const [eddData,    setEddData]  = useState(null);
+  const [eddLoading, setEddLoad]  = useState(true);
+  const [eddError,   setEddErr]   = useState(null);
 
   const loadData = useCallback(async () => {
     setPostsLoad(true);
-    // setRateLoad(true);
-    // setEddLoad(true);
+    setRateLoad(true);
+    setEddLoad(true);
 
     const [postsResult, settingsResult, rateResult, eddResult] = await Promise.all([
       fetchAllPosts(),
       fetchSiteSettings(),
-    //   fetchExchangeRate(),
-    //   fetchEddSettings(),
+      fetchExchangeRate(),
+      fetchEddSettings(),
     ]);
 
     // Part 1
@@ -74,9 +74,9 @@ export default function HomePage() {
     setRateLoad(false);
 
     // Part 3
-    // if (eddResult.error) setEddErr(eddResult.error);
-    // else setEddData(eddResult.data);
-    // setEddLoad(false);
+    if (eddResult.error) setEddErr(eddResult.error);
+    else setEddData(eddResult.data);
+    setEddLoad(false);
   }, []);
 
   useEffect(() => { loadData(); }, [loadData]);
@@ -121,13 +121,13 @@ export default function HomePage() {
         </section>
 
         {/* Parts 2 & 3 — Widgets grid */}
-        {/* <div className="widgets-grid">
+        <div className="widgets-grid">
           <ExchangeRate data={rateData} isLoading={rateLoading} error={rateError} />
           <EddSettings  data={eddData}  isLoading={eddLoading}  error={eddError}  />
-        </div> */}
+        </div>
 
         {/* Part 4 — Name form */}
-        {/* <NameForm /> */}
+        <NameForm />
 
       </main>
     </>
