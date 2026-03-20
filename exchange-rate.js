@@ -15,7 +15,7 @@
  * lib/api/exchange.js so the rate can be displayed in the UI (Part 2 UI req).
  */
 
-const ENDPOINT = 'https://api.exchangerate.host/latest?base=NGN&symbols=USD';
+const ENDPOINT = "https://open.er-api.com/v6/latest/NGN";
 
 /**
  * Fetches the NGN → USD exchange rate and logs the result.
@@ -25,7 +25,7 @@ const ENDPOINT = 'https://api.exchangerate.host/latest?base=NGN&symbols=USD';
  *   3. Malformed response (missing expected fields in the JSON)
  */
 async function fetchExchangeRate() {
-  console.log('Fetching NGN → USD exchange rate...\n');
+  console.log("Fetching NGN → USD exchange rate...\n");
 
   // ── 1. Network request ───────────────────────────────────────────────────
   let response;
@@ -33,14 +33,16 @@ async function fetchExchangeRate() {
     response = await fetch(ENDPOINT);
   } catch (networkErr) {
     // fetch() itself throws only on network-level failures (DNS, timeout, etc.)
-    console.error('❌ Network error — could not reach the exchange rate API.');
-    console.error('   Details:', networkErr.message);
+    console.error("❌ Network error — could not reach the exchange rate API.");
+    console.error("   Details:", networkErr.message);
     process.exit(1);
   }
 
   // ── 2. HTTP status check ─────────────────────────────────────────────────
   if (!response.ok) {
-    console.error(`❌ API responded with HTTP ${response.status} ${response.statusText}`);
+    console.error(
+      `❌ API responded with HTTP ${response.status} ${response.statusText}`,
+    );
     process.exit(1);
   }
 
@@ -49,37 +51,37 @@ async function fetchExchangeRate() {
   try {
     data = await response.json();
   } catch {
-    console.error('❌ Failed to parse API response as JSON.');
+    console.error("❌ Failed to parse API response as JSON.");
     process.exit(1);
   }
 
   // ── 4. Validate expected shape ───────────────────────────────────────────
   // exchangerate.host returns: { success: bool, base: string, rates: { USD: number } }
-  if (!data?.success) {
-    console.error('❌ API returned success: false.');
-    console.error('   Full response:', JSON.stringify(data, null, 2));
+  if (data?.result !== "success") {
+    console.error("❌ API returned result:", data?.result);
+    console.error("   Full response:", JSON.stringify(data, null, 2));
     process.exit(1);
   }
 
   const rate = data?.rates?.USD;
 
-  if (typeof rate !== 'number') {
-    console.error('❌ USD rate missing or not a number in API response.');
-    console.error('   Received rates:', JSON.stringify(data?.rates));
+  if (typeof rate !== "number") {
+    console.error("❌ USD rate missing or not a number in API response.");
+    console.error("   Received rates:", JSON.stringify(data?.rates));
     process.exit(1);
   }
 
   // ── 5. Success output ────────────────────────────────────────────────────
-  const date = data.date ?? new Date().toISOString().split('T')[0];
+  const date = data.date ?? new Date().toISOString().split("T")[0];
 
-  console.log('✅ Exchange rate fetched successfully');
-  console.log('─'.repeat(36));
+  console.log("✅ Exchange rate fetched successfully");
+  console.log("─".repeat(36));
   console.log(`   Base currency : NGN (Nigerian Naira)`);
   console.log(`   Target        : USD (US Dollar)`);
   console.log(`   Rate          : 1 NGN = ${rate.toFixed(8)} USD`);
   console.log(`   Inverse       : 1 USD = ${(1 / rate).toFixed(2)} NGN`);
   console.log(`   Rate date     : ${date}`);
-  console.log('─'.repeat(36));
+  console.log("─".repeat(36));
 }
 
 fetchExchangeRate();
