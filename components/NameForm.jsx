@@ -9,11 +9,11 @@ export default function NameForm() {
   const [successMsg,   setSuccessMsg]   = useState('');
 
   useEffect(() => {
-    async function loadStoredName() {
+    async function load() {
       const { data } = await getReversedName();
       if (data?.reversed_name) setReversedName(data.reversed_name);
     }
-    loadStoredName();
+    load();
   }, []);
 
   async function handleSubmit(e) {
@@ -45,7 +45,6 @@ export default function NameForm() {
               value={nameInput}
               onChange={(e) => setNameInput(e.target.value)}
               disabled={isSubmitting}
-              aria-label="Name to submit"
               maxLength={100}
             />
             <button type="submit" className="form-btn" disabled={isSubmitting || !nameInput.trim()}>
@@ -71,3 +70,4 @@ export default function NameForm() {
     </div>
   );
 }
+
