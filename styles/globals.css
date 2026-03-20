@@ -1,0 +1,359 @@
+/* ── Design tokens ────────────────────────────────────────────────────────── */
+:root {
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  --bg:          #0f1117;
+  --surface:     #1a1d27;
+  --border:      #272b38;
+  --text:        #e8eaf0;
+  --muted:       #6b7280;
+  --accent:      #6366f1;
+  --accent-h:    #818cf8;
+  --error:       #ef4444;
+  --error-bg:    rgba(239,68,68,0.08);
+  --error-border:rgba(239,68,68,0.25);
+
+  --radius:  10px;
+  --radius-s: 6px;
+  --ease:    180ms ease;
+}
+
+/* ── Reset ──────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────────────────────────────── */
+.main-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+}
+
+/* ── Site header ────────────────────────────────────────────────────────────── */
+.site-header {
+  margin-bottom: 3rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.site-title {
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  /* Gradient text — purely decorative */
+  background: linear-gradient(130deg, var(--text) 30%, var(--accent-h) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.site-description {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* ── Posts section ──────────────────────────────────────────────────────────── */
+.posts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.posts-heading {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.posts-count {
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+/* ── Post list ──────────────────────────────────────────────────────────────── */
+.post-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.post-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.35rem;
+  transition: border-color var(--ease), transform var(--ease);
+}
+
+.post-item:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.post-title {
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.post-meta {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* ── Skeleton loading ──────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -500px 0; }
+  100% { background-position:  500px 0; }
+}
+
+.post-item--skeleton { pointer-events: none; }
+
+.skeleton-title,
+.skeleton-meta {
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--border) 25%, #2e3347 50%, var(--border) 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.skeleton-title { height: 17px; width: 68%; margin-bottom: 10px; }
+.skeleton-meta  { height: 12px; width: 28%; }
+
+/* ── State boxes (error / empty) ────────────────────────────────────────────── */
+.state-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius);
+  font-size: 0.88rem;
+}
+
+.state-box--error {
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
+  color: var(--error);
+}
+
+.state-box--empty {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.state-icon { flex-shrink: 0; margin-top: 1px; }
+
+/* ── Toggle button ──────────────────────────────────────────────────────────── */
+.toggle-btn {
+  padding: 0.38rem 1rem;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--ease), color var(--ease);
+  white-space: nowrap;
+}
+
+.toggle-btn:hover:not(:disabled) {
+  background: var(--accent);
+  color: #fff;
+}
+
+.toggle-btn--active {
+  background: rgba(99,102,241,0.1);
+}
+
+.toggle-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Retry button ───────────────────────────────────────────────────────────── */
+.retry-btn {
+  margin-top: 0.75rem;
+  padding: 0.38rem 1rem;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: border-color var(--ease);
+}
+
+.retry-btn:hover { border-color: var(--accent); }
+
+/* ── Widgets grid (Parts 2 & 3 side by side) ─────────────────────────────── */
+.widgets-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin: 2rem 0;
+}
+
+@media (max-width: 560px) {
+  .widgets-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Widget card ────────────────────────────────────────────────────────────── */
+.widget {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.35rem 1.25rem;
+}
+
+.widget-title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 0.9rem;
+}
+
+.widget-icon { font-size: 0.9rem; }
+
+.widget-body { display: flex; flex-direction: column; gap: 0.3rem; }
+
+.widget-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.widget-equals { color: var(--muted); font-weight: 400; }
+
+.widget-currency {
+  color: var(--accent-h);
+  font-weight: 700;
+}
+
+.widget-sub {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.widget-date {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+/* ── EDD raw settings collapsible ────────────────────────────────────────── */
+.widget-raw {
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.widget-raw summary {
+  cursor: pointer;
+  padding: 0.2rem 0;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.widget-raw pre {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
+  font-size: 0.72rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text);
+  font-family: 'Cascadia Code', 'Fira Code', monospace;
+}
+
+/* ── Name form (Part 4) ──────────────────────────────────────────────────── */
+.name-form-section {
+  margin-bottom: 1.5rem;
+}
+
+.name-form { display: flex; flex-direction: column; gap: 0.65rem; }
+
+.form-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.form-input {
+  flex: 1;
+  padding: 0.5rem 0.85rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  transition: border-color var(--ease);
+  outline: none;
+}
+
+.form-input::placeholder { color: var(--muted); }
+.form-input:focus { border-color: var(--accent); }
+.form-input:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.form-btn {
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity var(--ease);
+}
+
+.form-btn:hover:not(:disabled) { opacity: 0.85; }
+.form-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.form-feedback { margin-top: 0.1rem; }
+
+.form-success {
+  font-size: 0.8rem;
+  color: #4ade80;
+  margin-top: 0.1rem;
+}
+
+.reversed-result { margin-top: 1rem; }
+
+.reversed-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--accent-h);
+  margin-top: 0.2rem;
+}
