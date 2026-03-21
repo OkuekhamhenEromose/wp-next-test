@@ -6,9 +6,14 @@ node_modules/
 out/
 
 # Environment — NEVER commit real credentials
+.env
 .env.local
 .env*.local
 
 # OS files
 .DS_Store
 Thumbs.db
+
+__pycache__/
+*.pyc
+*.sqlite3
