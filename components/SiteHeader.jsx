@@ -1,9 +1,3 @@
-/**
- * SiteHeader — displays WordPress site title and tagline.
- * Renders nothing if settings are unavailable (graceful degradation).
- *
- * @param {{ settings: import('../lib/types').SiteSettings|null }} props
- */
 export default function SiteHeader({ settings }) {
   if (!settings) return null;
 

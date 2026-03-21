@@ -6,14 +6,6 @@
  *   Part 2 — NGN → USD exchange rate via external REST API (ExchangeRate)
  *   Part 3 — EDD store currency via WordPress REST API (EddSettings)
  *   Part 4 — Custom name form via WordPress custom REST API (NameForm)
- *
- * This page's ONLY jobs:
- *   1. Fetch data on mount for Parts 1, 2, and 3 (parallel, one useEffect)
- *   2. Hold state for loading/error/data for those three sections
- *   3. Compose child components — zero raw fetch calls, zero markup beyond layout
- *
- * Part 4 (NameForm) manages its own state internally — it's a self-contained
- * form with no data shared with the rest of the page.
  */
 
 import { useState, useEffect, useCallback } from 'react';

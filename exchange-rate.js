@@ -5,14 +5,6 @@
  * Run directly with: node exchange-rate.js
  *
  * Fetches the NGN → USD exchange rate from exchangerate.host and logs it.
- *
- * WHY a standalone script (not a Next.js API route):
- * The test asks for a file called exchange-rate.js at the project root.
- * This mimics a real-world utility script used in CI pipelines, cron jobs,
- * or server-side automation — separate from the web app's request lifecycle.
- *
- * The same fetch logic is also imported into the Next.js app via
- * lib/api/exchange.js so the rate can be displayed in the UI (Part 2 UI req).
  */
 
 const ENDPOINT = "https://open.er-api.com/v6/latest/NGN";
@@ -27,7 +19,7 @@ const ENDPOINT = "https://open.er-api.com/v6/latest/NGN";
 async function fetchExchangeRate() {
   console.log("Fetching NGN → USD exchange rate...\n");
 
-  // ── 1. Network request ───────────────────────────────────────────────────
+  // ── 1. Network request 
   let response;
   try {
     response = await fetch(ENDPOINT);
@@ -38,7 +30,7 @@ async function fetchExchangeRate() {
     process.exit(1);
   }
 
-  // ── 2. HTTP status check ─────────────────────────────────────────────────
+  // ── 2. HTTP status check 
   if (!response.ok) {
     console.error(
       `❌ API responded with HTTP ${response.status} ${response.statusText}`,
@@ -46,7 +38,7 @@ async function fetchExchangeRate() {
     process.exit(1);
   }
 
-  // ── 3. Parse and validate JSON ───────────────────────────────────────────
+  // ── 3. Parse and validate JSON 
   let data;
   try {
     data = await response.json();
@@ -55,8 +47,7 @@ async function fetchExchangeRate() {
     process.exit(1);
   }
 
-  // ── 4. Validate expected shape ───────────────────────────────────────────
-  // exchangerate.host returns: { success: bool, base: string, rates: { USD: number } }
+  // ── 4. Validate expected shape 
   if (data?.result !== "success") {
     console.error("❌ API returned result:", data?.result);
     console.error("   Full response:", JSON.stringify(data, null, 2));
@@ -71,7 +62,7 @@ async function fetchExchangeRate() {
     process.exit(1);
   }
 
-  // ── 5. Success output ────────────────────────────────────────────────────
+  // ── 5. Success output 
   const date = data.date ?? new Date().toISOString().split("T")[0];
 
   console.log("✅ Exchange rate fetched successfully");

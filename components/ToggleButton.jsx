@@ -1,14 +1,3 @@
-/**
- * ToggleButton — controls the "show 3 recent / show all" switch.
- * Pure presentational: no state, no fetching. Parent owns the logic.
- *
- * @param {{
- *   showAll:    boolean,
- *   onToggle:   () => void,
- *   totalCount: number,
- *   disabled?:  boolean
- * }} props
- */
 export default function ToggleButton({
   showAll,
   onToggle,

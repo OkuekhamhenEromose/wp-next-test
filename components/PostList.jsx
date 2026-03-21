@@ -1,13 +1,3 @@
-/**
- * PostList — pure presentational component.
- * Handles all three render states: loading skeleton, error, data (including empty).
- *
- * @param {{
- *   posts:     import('../lib/types').Post[],
- *   isLoading: boolean,
- *   error:     string|null
- * }} props
- */
 export default function PostList({ posts, isLoading, error }) {
   // ── Loading ──────────────────────────────────────────────────────────────
   if (isLoading) {
